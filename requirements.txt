@@ -1,0 +1,16 @@
+torch>=2.0
+transformers>=4.40
+accelerate
+bitsandbytes
+open-clip-torch
+matplotlib
+seaborn
+scikit-learn
+umap-learn
+numpy
+pandas
+Pillow
+scipy
+pyyaml
+tqdm
+gradio>=4.0

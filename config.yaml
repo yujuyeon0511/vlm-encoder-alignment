@@ -1,0 +1,46 @@
+# VLM Encoder Alignment - Configuration
+# Override any value with environment variables (e.g., VLM_DATA_ROOT)
+
+data:
+  # Path to real VLM dataset. Set VLM_DATA_ROOT env var to override.
+  root: null  # e.g., /path/to/VLM_DATA/vlm_20251118
+  # Fallback to sample_data/ when root is null or missing
+  sample_dir: sample_data
+
+  datasets:
+    chart:
+      label_file: label_v2/bichallava_instruct_230k_chart_v2_axolotl.jsonl
+      image_dir: images/bichallava_instruct_230k_chart
+    table:
+      label_file: label_v2/table-VQA-ko-60k.jsonl
+      image_dir: images/table-VQA-ko-60k
+    visualization:
+      label_file: label_v2/AIHUB_Visualization_v2_axolotl.jsonl
+      image_dir: images/AIHUB_Visualization
+    text:
+      label_file: label_v2/AIHUB_subjectmaterial_text_modify_v2_axolotl.jsonl
+      image_dir: images/AIHUB_subjectmaterial_text_modify
+    math:
+      label_file: label_v2/AIHUB_mathproblem_multiple_v2_axolotl.jsonl
+      image_dir: images/AIHUB_mathproblem_multiple
+
+models:
+  vision_encoders:
+    clip: openai/clip-vit-base-patch32
+    siglip: google/siglip-base-patch16-224
+    dinov2: facebook/dinov2-base
+    internvit: OpenGVLab/InternViT-300M-448px
+    paligemma: google/paligemma-3b-pt-224
+
+  llms:
+    llama: huggyllama/llama-7b
+    llama3: meta-llama/Llama-3.1-8B
+    qwen: Qwen/Qwen2.5-7B
+    gemma3: google/gemma-3-4b-pt
+    internlm: internlm/internlm2_5-7b
+
+defaults:
+  device: auto  # auto, cuda, cpu
+  output_dir: outputs
+  n_samples: 30
+  seed: 42

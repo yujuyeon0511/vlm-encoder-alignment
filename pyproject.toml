@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "vlm-encoder-alignment"
+version = "1.0.0"
+description = "Vision Encoder - LLM Alignment Analysis Toolkit"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = [
+    "torch>=2.0",
+    "transformers>=4.40",
+    "accelerate",
+    "bitsandbytes",
+    "open-clip-torch",
+    "matplotlib",
+    "seaborn",
+    "scikit-learn",
+    "umap-learn",
+    "numpy",
+    "pandas",
+    "Pillow",
+    "scipy",
+    "pyyaml",
+    "tqdm",
+    "gradio>=4.0",
+]
+
+[project.scripts]
+vlm-align = "cli:main"
+
+[tool.setuptools.packages.find]
+include = ["vlm_alignment*"]

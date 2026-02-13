@@ -1,0 +1,9 @@
+{"image": "images/chart/chart_01.png", "question": "What is the highest value in this chart?", "answer": "The highest value varies by chart.", "data_type": "chart"}
+{"image": "images/chart/chart_02.png", "question": "What is the highest value in this chart?", "answer": "The highest value varies by chart.", "data_type": "chart"}
+{"image": "images/chart/chart_03.png", "question": "What is the highest value in this chart?", "answer": "The highest value varies by chart.", "data_type": "chart"}
+{"image": "images/table/table_01.png", "question": "What is the price of Banana?", "answer": "$0.50", "data_type": "table"}
+{"image": "images/table/table_02.png", "question": "What is the price of Banana?", "answer": "$0.50", "data_type": "table"}
+{"image": "images/table/table_03.png", "question": "What is the price of Banana?", "answer": "$0.50", "data_type": "table"}
+{"image": "images/document/document_01.png", "question": "What is the main topic of this document?", "answer": "The document covers introduction, methods, and results.", "data_type": "text"}
+{"image": "images/document/document_02.png", "question": "What is the main topic of this document?", "answer": "The document covers introduction, methods, and results.", "data_type": "text"}
+{"image": "images/document/document_03.png", "question": "What is the main topic of this document?", "answer": "The document covers introduction, methods, and results.", "data_type": "text"}

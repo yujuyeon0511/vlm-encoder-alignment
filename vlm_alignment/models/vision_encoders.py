@@ -133,12 +133,17 @@ class VisionEncoderManager:
     def _extract_clip(self, model, processor, images):
         inputs = processor(images=images, return_tensors="pt", padding=True)
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
-        return model.get_image_features(**inputs).cpu().numpy()
+        vision_out = model.vision_model(pixel_values=inputs["pixel_values"])
+        pooled = vision_out.pooler_output
+        projected = model.visual_projection(pooled)
+        return projected.float().cpu().numpy()
 
     def _extract_siglip(self, model, processor, images):
         inputs = processor(images=images, return_tensors="pt", padding=True)
         inputs = {k: v.to(self.device) for k, v in inputs.items()}
-        return model.get_image_features(**inputs).cpu().numpy()
+        vision_out = model.vision_model(pixel_values=inputs["pixel_values"])
+        pooled = vision_out.pooler_output
+        return pooled.float().cpu().numpy()
 
     def _extract_dinov2(self, model, processor, images):
         inputs = processor(images=images, return_tensors="pt")

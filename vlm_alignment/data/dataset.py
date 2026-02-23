@@ -170,17 +170,18 @@ class VLMDataset:
         return samples
 
     def _load_sample_data(self, data_type: str, n_samples: int) -> List[VLMSample]:
-        """Load from built-in sample_data directory."""
+        """Load from built-in sample_data directory, generating extras if needed."""
         from vlm_alignment.data.synthetic import DataGenerator
 
         print(f"Using synthetic sample data for '{data_type}' (real data not available)")
         gen = DataGenerator(seed=self.seed)
 
+        samples = []
+
         # Check if pre-generated sample images exist
         sample_dir = os.path.join(str(get_project_root()), "sample_data", "images", data_type)
         if os.path.exists(sample_dir):
             files = sorted(f for f in os.listdir(sample_dir) if f.endswith(".png"))
-            samples = []
             for f in files[:n_samples]:
                 path = os.path.join(sample_dir, f)
                 img = Image.open(path).convert("RGB")
@@ -189,29 +190,32 @@ class VLMDataset:
                     question=f"Describe this {data_type} image.",
                     answer="", data_type=data_type,
                 ))
-            if samples:
-                return samples
 
-        # Generate on the fly
-        if data_type == "chart":
-            images = [gen.generate_bar_chart(title=f"Chart {i+1}") for i in range(n_samples)]
-        elif data_type == "table":
-            images = [gen.generate_table_image(title=f"Table {i+1}") for i in range(n_samples)]
-        elif data_type in ("text", "document"):
-            images = [gen.generate_document_image(f"Doc {i+1}") for i in range(n_samples)]
-        else:
-            images = gen.generate_simple_images(n_samples)
+        # Generate additional synthetic images if not enough
+        n_needed = n_samples - len(samples)
+        if n_needed > 0:
+            offset = len(samples)
+            if data_type == "chart":
+                images = [gen.generate_bar_chart(title=f"Chart {offset+i+1}") for i in range(n_needed)]
+            elif data_type == "table":
+                images = [gen.generate_table_image(title=f"Table {offset+i+1}") for i in range(n_needed)]
+            elif data_type in ("text", "document"):
+                images = [gen.generate_document_image(f"Doc {offset+i+1}") for i in range(n_needed)]
+            else:
+                images = gen.generate_simple_images(n_needed)
 
-        return [
-            VLMSample(
-                image_path="synthetic",
-                image=img,
-                question=f"Describe this {data_type} image.",
-                answer="",
-                data_type=data_type,
-            )
-            for img in images
-        ]
+            samples.extend([
+                VLMSample(
+                    image_path="synthetic",
+                    image=img,
+                    question=f"Describe this {data_type} image.",
+                    answer="",
+                    data_type=data_type,
+                )
+                for img in images
+            ])
+
+        return samples[:n_samples]
 
     def load_mixed(self, n_per_type: int = 10, data_types: List[str] = None) -> Tuple[List[VLMSample], List[str]]:
         """Load mixed samples from multiple data types.

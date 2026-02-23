@@ -128,8 +128,9 @@ def run_encoder_comparison(
                     projection_type=pt, device=device, test_ratio=0.2,
                 )
                 proj_results[enc][pt] = result.train_loss
+                test_str = f"{result.test_loss:.4f}" if result.test_loss else "N/A"
                 print(f"  {enc}/{pt}: train_loss={result.train_loss:.4f}, "
-                      f"test_loss={result.test_loss:.4f if result.test_loss else 'N/A'}")
+                      f"test_loss={test_str}")
 
         plot_projector_comparison(proj_results, output_path=os.path.join(output_dir, "projector_comparison.png"))
 

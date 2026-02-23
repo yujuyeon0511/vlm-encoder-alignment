@@ -368,12 +368,15 @@ class CORALAnalyzer:
         coral_raw = coral_distance(v_aligned, t_aligned, self.eps)
         coral_score = 1.0 / (1.0 + coral_raw)
 
-        # Discriminability
+        # Discriminability (use original vision features, not PCA-projected)
         if labels is not None:
-            labels = labels[:n]
-            disc = self._compute_discriminability(v_aligned, labels)
+            lbl = np.asarray(labels)[:n]
+            # Convert string labels to integers
+            if lbl.dtype.kind in ('U', 'S', 'O'):
+                _, lbl = np.unique(lbl, return_inverse=True)
+            disc = self._compute_discriminability(v, lbl)
         else:
-            disc = self._estimate_discriminability(v_aligned)
+            disc = self._estimate_discriminability(v)
 
         eas = alpha * cka + beta * coral_score + gamma * disc
 
